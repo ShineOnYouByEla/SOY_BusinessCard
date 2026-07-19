@@ -224,7 +224,7 @@ a.contact-item:nth-child(even):hover .contact-value { color: var(--wave); }
 /* ===== Speichern ===== */
 /* Plattform-Karten */
 .method-cards {
-  display: grid; gap: 16px; grid-template-columns: repeat(3, 1fr);
+  display: grid; gap: 16px; grid-template-columns: repeat(3, minmax(0, 1fr));
   max-width: 620px; margin: 0 auto;
 }
 .method {
