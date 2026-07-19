@@ -22,6 +22,13 @@ lediglich die Nutzung (Plattform-Erkennung, sauberer Blob-Download).
 Die Seite ist bewusst **nicht für Suchmaschinen gelistet** (`noindex` +
 `robots.txt`), da Besucher sie über einen aufgedruckten QR-Code aufrufen.
 
+## Hosting
+
+Die Seite wird über GitHub Pages unter der eigenen Domain
+[qr.shineonyou.de](https://qr.shineonyou.de) veröffentlicht. Die Datei `CNAME`
+im Projektwurzelverzeichnis konfiguriert diese Custom Domain – sie darf beim
+Deploy nicht entfernt werden.
+
 ## Vorschau / lokal starten
 
 ```bash
