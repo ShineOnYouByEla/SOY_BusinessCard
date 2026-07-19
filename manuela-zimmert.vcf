@@ -1,0 +1,13 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Zimmert;Manuela;;;
+FN:Manuela Zimmert
+NICKNAME:Ela
+ORG:Shine On You – proWIN Beratung
+TITLE:Unabhängige proWIN-Vertriebsberaterin
+TEL;TYPE=CELL,VOICE:+491732008319
+EMAIL;TYPE=INTERNET,PREF:manuela@shineonyou.de
+URL:https://shineonyou.de
+ADR;TYPE=WORK:;;Tannenstraße 7a;Peiting;;86971;Deutschland
+NOTE:Natürlich sauber. Natürlich du. – proWIN Beratung in Peiting & Umgebung.
+END:VCARD
