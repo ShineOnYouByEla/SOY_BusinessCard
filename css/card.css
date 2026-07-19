@@ -40,7 +40,6 @@ body {
   background-image:
     radial-gradient(120% 60% at 50% -8%, rgba(233,182,144,.16), transparent 55%),
     radial-gradient(90% 55% at 50% 108%, rgba(142,210,217,.12), transparent 60%);
-  background-attachment: fixed;
 }
 
 img { max-width: 100%; height: auto; display: block; }
@@ -105,7 +104,24 @@ h3 { font-size: 1.12rem; font-weight: 600; }
 .brand-logo { height: 84px; width: auto; }
 
 /* ===== Visitenkarten-Layout ===== */
-.card-main { padding: clamp(28px, 6vw, 56px) 0 40px; }
+.card-main { padding: 0 0 40px; }
+
+/* ===== Hero (Profil-Kopf) ===== */
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(30px, 7vw, 60px) 0 clamp(24px, 5vw, 44px);
+}
+/* Dekorative Glow-Ebene für den Parallax-Effekt (liegt hinter dem Inhalt) */
+.hero-glow {
+  position: absolute; inset: -14% -10% 6% -10%;
+  z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(closest-side, rgba(233,182,144,.22), transparent 70%) 30% 12% / 62% 62% no-repeat,
+    radial-gradient(closest-side, rgba(142,210,217,.18), transparent 70%) 76% 70% / 54% 54% no-repeat;
+  will-change: transform;
+}
+.hero > .container { position: relative; z-index: 1; }
 
 /* Profil-Kopf */
 .profile {
@@ -139,9 +155,24 @@ h3 { font-size: 1.12rem; font-weight: 600; }
 .profile-cta { display: grid; gap: 12px; max-width: 380px; margin: 0 auto; }
 
 /* ===== Kontaktliste ===== */
-.section { padding: clamp(30px, 6vw, 48px) 0; position: relative; }
+.section { padding: clamp(30px, 6vw, 48px) 0; position: relative; overflow: hidden; }
 .section + .section { border-top: 1px solid var(--petrol-line); }
 .section-alt { background: rgba(8, 43, 48, 0.5); }
+/* Inhalt liegt über den dekorativen Glow-Ebenen */
+.section > .container { position: relative; z-index: 1; }
+
+/* Dekorative, parallaxgesteuerte Glow-Blobs in den Sektionen */
+.section-glow {
+  position: absolute; z-index: 0; pointer-events: none;
+  width: clamp(280px, 60vw, 520px); aspect-ratio: 1; border-radius: 50%;
+  filter: blur(14px); opacity: .55; will-change: transform;
+}
+.section-glow.sun  { background: radial-gradient(closest-side, rgba(233,182,144,.16), transparent 70%); }
+.section-glow.wave { background: radial-gradient(closest-side, rgba(142,210,217,.15), transparent 70%); }
+
+/* Sanftes Einblenden beim Scrollen (per JS aktiviert, respektiert reduced-motion) */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.in { opacity: 1; transform: none; }
 .section-kicker {
   font-family: var(--font-head); font-weight: 600;
   text-transform: uppercase; letter-spacing: .2em;
@@ -231,7 +262,16 @@ a.contact-item:nth-child(even):hover .contact-value { color: var(--wave); }
   background: var(--petrol-2);
 }
 .footer-logo { height: 62px; width: auto; margin: 0 auto 6px; }
-.footer-tag { color: var(--cream-dim); margin: 0 0 16px; font-style: italic; font-size: .95rem; }
+.footer-tag { color: var(--cream-dim); margin: 0 0 14px; font-style: italic; font-size: .95rem; }
+.footer-partner {
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-wrap: wrap; gap: 4px 10px;
+  margin: 0 auto 16px;
+  font-family: var(--font-head); font-weight: 600;
+  font-size: .72rem; text-transform: uppercase; letter-spacing: .16em;
+  color: var(--wave);
+}
+.footer-partner .footer-prowin { height: 20px; width: auto; opacity: .95; transform: translateY(-1px); }
 .footer-nav { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; margin-bottom: 14px; }
 .footer-nav a { color: var(--cream); font-family: var(--font-head); font-size: .9rem; }
 .footer-nav a:hover { color: var(--sun); }

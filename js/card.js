@@ -68,6 +68,61 @@ document.querySelectorAll('a[href$="' + VCARD_FILE + '"], a[href$=".vcf"]').forE
   });
 });
 
+/* ===== Parallax =====
+   Elemente mit data-parallax="0.08" driften relativ zur Bildschirmmitte –
+   der Effekt ist dadurch lokal begrenzt und funktioniert auf der ganzen Seite
+   (nicht nur oben). Wert = Stärke. Respektiert prefers-reduced-motion, rAF. */
+(function initParallax() {
+  const els = Array.from(document.querySelectorAll("[data-parallax]"));
+  if (!els.length) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  let ticking = false;
+  function update() {
+    const mid = window.innerHeight / 2;
+    for (const el of els) {
+      const speed = parseFloat(el.dataset.parallax) || 0;
+      const rect = el.getBoundingClientRect();
+      const center = rect.top + rect.height / 2;
+      const shift = (mid - center) * speed;
+      el.style.transform = `translate3d(0, ${shift.toFixed(1)}px, 0)`;
+    }
+    ticking = false;
+  }
+  function onScroll() {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", onScroll, { passive: true });
+  update();
+})();
+
+/* ===== Sanftes Einblenden beim Scrollen =====
+   Blendet Kontakt- und Speichern-Elemente ein, sobald sie sichtbar werden.
+   Reduced-motion oder fehlender IntersectionObserver: kein Effekt. */
+(function initReveal() {
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (!("IntersectionObserver" in window)) return;
+  const targets = document.querySelectorAll(".contact-list li, .method, #speichern .section-sub");
+  if (!targets.length) return;
+
+  const io = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("in");
+        io.unobserve(entry.target);
+      }
+    }
+  }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+
+  targets.forEach((el, i) => {
+    el.classList.add("reveal");
+    // leichte Staffelung innerhalb von Reihen (max. 3 Stufen)
+    el.style.transitionDelay = (Math.min(i % 3, 2) * 80) + "ms";
+    io.observe(el);
+  });
+})();
+
 /* ===== Passende Plattform-Karte hervorheben & nach vorne holen ===== */
 (function highlightPlatform() {
   const cards = document.querySelector(".method-cards");
