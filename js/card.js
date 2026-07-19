@@ -20,7 +20,7 @@ const VCARD = [
   "NICKNAME:Ela",
   "ORG:Shine On You – proWIN Beratung",
   "TITLE:Unabhängige proWIN-Vertriebsberaterin",
-  "TEL;TYPE=CELL,VOICE:+491732008319",
+  "TEL;TYPE=CELL,VOICE:+4915510279357",
   "EMAIL;TYPE=INTERNET,PREF:manuela@shineonyou.de",
   "URL:https://shineonyou.de",
   "ADR;TYPE=WORK:;;Tannenstraße 7a;Peiting;;86971;Deutschland",
