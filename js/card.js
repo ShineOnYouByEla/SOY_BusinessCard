@@ -23,7 +23,6 @@ const VCARD = [
   "TEL;TYPE=CELL,VOICE:+4915510279357",
   "EMAIL;TYPE=INTERNET,PREF:prowin.ela@web.de",
   "URL:https://shineonyou.de",
-  "ADR;TYPE=WORK:;;Tannenstraße 7a;Peiting;;86971;Deutschland",
   "NOTE:Natürlich sauber. Natürlich du. – proWIN Beratung in Peiting & Umgebung.",
   "END:VCARD",
   "",
