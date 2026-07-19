@@ -190,32 +190,11 @@ a.contact-item:hover .contact-value { color: var(--sun); }
 a.contact-item:nth-child(even):hover { border-color: rgba(142,210,217,.5); }
 a.contact-item:nth-child(even):hover .contact-value { color: var(--wave); }
 
-/* ===== Speichern / QR ===== */
-.save-grid {
-  display: grid; grid-template-columns: auto 1fr; gap: clamp(20px, 5vw, 40px);
-  align-items: center; max-width: 620px; margin: 0 auto;
-}
-.qr-card {
-  background: var(--cream);
-  border-radius: 18px;
-  padding: 14px;
-  width: clamp(150px, 40vw, 200px);
-  box-shadow: var(--shadow);
-  margin: 0 auto;
-}
-.qr-card img { width: 100%; height: auto; display: block; border-radius: 6px; }
-.qr-hint {
-  text-align: center; font-size: .82rem; color: var(--cream-dim);
-  margin: 10px 0 0;
-}
-.save-copy h2 { text-align: left; margin-top: 0; }
-.save-copy p { color: var(--cream-dim); margin: 0 0 16px; }
-.save-actions { display: grid; gap: 10px; }
-
+/* ===== Speichern ===== */
 /* Plattform-Karten */
 .method-cards {
   display: grid; gap: 16px; grid-template-columns: repeat(3, 1fr);
-  max-width: 620px; margin: 30px auto 0;
+  max-width: 620px; margin: 0 auto;
 }
 .method {
   background: var(--petrol-card);
@@ -263,8 +242,6 @@ a.contact-item:nth-child(even):hover .contact-value { color: var(--wave); }
 /* ===== Responsive ===== */
 @media (max-width: 600px) {
   body { font-size: 16px; }
-  .save-grid { grid-template-columns: 1fr; }
-  .save-copy h2, .save-copy p { text-align: center; }
   .method-cards { grid-template-columns: 1fr; }
   .method { flex-direction: row; text-align: left; gap: 16px; align-items: center; }
   .method-ic { margin-bottom: 0; }

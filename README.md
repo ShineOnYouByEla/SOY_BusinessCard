@@ -14,11 +14,13 @@ Reines HTML, CSS und JavaScript – kein Build-Schritt, keine externen Aufrufe
   - **Android** – die vCard wird geladen und in die Kontakte importiert.
   - **vCard (.vcf)** – universelle Kontaktdatei, funktioniert auch am
     PC, Mac und in Outlook.
-- **QR-Code** mit denselben Kontaktdaten – zum Scannen mit einem zweiten Handy.
 
 Alle Buttons verlinken direkt auf `manuela-zimmert.vcf`, damit die Seite auch
 ohne JavaScript vollständig funktioniert. Das Skript `js/card.js` verbessert
 lediglich die Nutzung (Plattform-Erkennung, sauberer Blob-Download).
+
+Die Seite ist bewusst **nicht für Suchmaschinen gelistet** (`noindex` +
+`robots.txt`), da Besucher sie über einen aufgedruckten QR-Code aufrufen.
 
 ## Vorschau / lokal starten
 
@@ -39,7 +41,7 @@ python3 -m http.server 8000
 ├── js/card.js            # Plattform-Erkennung & vCard-Download
 └── assets/
     ├── fonts/            # woff2-Schriften
-    └── img/              # Logos, Favicons, QR-Code
+    └── img/              # Logos & Favicons
 ```
 
 ## Kontaktdaten anpassen
@@ -49,9 +51,6 @@ Die Daten stehen an drei Stellen und müssen bei Änderungen synchron bleiben:
 1. `manuela-zimmert.vcf` – die herunterladbare vCard.
 2. `js/card.js` – die Konstante `VCARD` (Quelle für den Blob-Download).
 3. `index.html` – die sichtbaren Kontaktzeilen und die strukturierten Daten.
-
-Der QR-Code (`assets/img/qr-vcard.svg`) kodiert dieselben Kontaktdaten und
-muss bei Änderungen neu erzeugt werden (z. B. mit [segno](https://pypi.org/project/segno/)).
 
 ---
 
