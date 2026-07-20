@@ -132,7 +132,7 @@ document.querySelectorAll('a[href$="' + VCARD_FILE + '"], a[href$=".vcf"]').forE
   else if (isAndroid) match = list.find((c) => /Android/i.test(c.textContent));
   if (match) {
     match.style.borderColor = "rgba(233,182,144,.6)";
-    match.style.background = "#0e3f46";
+    match.style.background = "var(--card-hover-bg)";
     cards.insertBefore(match, cards.firstChild);
   }
 })();

@@ -23,6 +23,43 @@
 
   --font-head: "Montserrat", system-ui, sans-serif;
   --font-body: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+
+  /* Farbschema für native Steuerelemente (Scrollbar) */
+  color-scheme: dark;
+
+  /* Rollenbasierte Werte, die das Theme umschaltet (Standard: Dunkel) */
+  --header-bg:     rgba(4, 31, 36, 0.6);
+  --card-hover-bg: #0e3f46;
+  --btn-ink:       #2a1606;  /* Text auf Sonne-Buttons */
+  --btn-ink-wave:  #06262b;  /* Text auf Wellen-Buttons */
+}
+
+/* ============================================================
+   Light Mode – dieselben Rollen-Variablen, helle Werte.
+   Aktiviert über <html data-theme="light">.
+   ============================================================ */
+:root[data-theme="light"] {
+  color-scheme: light;
+
+  --petrol:        #fbf7f0;  /* Haupt-Hintergrund (warmes Off-White) */
+  --petrol-2:      #f2ebdd;  /* alternierende Flächen */
+  --petrol-card:   #ffffff;  /* Karten/Felder */
+  --petrol-line:   #e5dccb;  /* Rahmen/Linien */
+
+  --cream:         #123338;  /* Haupt-Textfarbe (tiefes Petrol) */
+  --cream-dim:     #4f6560;  /* gedämpfter Text */
+
+  --sun:           #b45f16;  /* Sonne kräftiger für Kontrast auf hell */
+  --sun-deep:      #97500f;
+  --wave:          #0f7d8a;  /* Welle kräftiger für Kontrast auf hell */
+  --wave-deep:     #0a626d;
+
+  --shadow: 0 18px 40px -24px rgba(18, 51, 56, 0.28);
+
+  --header-bg:     rgba(251, 247, 240, 0.72);
+  --card-hover-bg: #fff7ec;
+  --btn-ink:       #ffffff;  /* Sonne wird dunkler -> heller Text */
+  --btn-ink-wave:  #ffffff;
 }
 
 * { box-sizing: border-box; }
@@ -40,6 +77,7 @@ body {
   background-image:
     radial-gradient(120% 60% at 50% -8%, rgba(233,182,144,.16), transparent 55%),
     radial-gradient(90% 55% at 50% 108%, rgba(142,210,217,.12), transparent 60%);
+  transition: background-color .35s ease, color .35s ease;
 }
 
 img { max-width: 100%; height: auto; display: block; }
@@ -82,10 +120,10 @@ h3 { font-size: 1.12rem; font-weight: 600; }
 }
 .btn:hover { transform: translateY(-2px); }
 .btn:focus-visible { outline: 3px solid var(--wave); outline-offset: 3px; }
-.btn-sun  { background: var(--sun); color: #2a1606; }
-.btn-sun:hover  { background: var(--sun-deep); color: #2a1606; }
-.btn-wave { background: var(--wave); color: #06262b; }
-.btn-wave:hover { background: var(--wave-deep); color: #06262b; }
+.btn-sun  { background: var(--sun); color: var(--btn-ink); }
+.btn-sun:hover  { background: var(--sun-deep); color: var(--btn-ink); }
+.btn-wave { background: var(--wave); color: var(--btn-ink-wave); }
+.btn-wave:hover { background: var(--wave-deep); color: var(--btn-ink-wave); }
 .btn-ghost { background: transparent; color: var(--cream); border-color: var(--petrol-line); }
 .btn-ghost:hover { border-color: var(--sun); color: var(--sun); }
 .btn-block { width: 100%; }
@@ -94,14 +132,46 @@ h3 { font-size: 1.12rem; font-weight: 600; }
 /* ===== Header ===== */
 .site-header {
   border-bottom: 1px solid var(--petrol-line);
-  background: rgba(4, 31, 36, 0.6);
+  background: var(--header-bg);
+  backdrop-filter: blur(10px);
+  transition: background-color .35s ease, border-color .35s ease;
 }
 .header-inner {
+  position: relative;
   display: flex; align-items: center; justify-content: center;
   min-height: 60px; padding: 8px 0;
 }
 .brand { display: inline-flex; align-items: center; }
 .brand-logo { height: 84px; width: auto; }
+
+/* ===== Theme-Umschalter (Hell/Dunkel) ===== */
+.theme-toggle {
+  position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 50%; flex: none;
+  color: var(--cream); background: transparent;
+  border: 1px solid var(--petrol-line); cursor: pointer; padding: 0;
+  transition: color .2s ease, border-color .2s ease, background .2s ease;
+}
+.theme-toggle svg { width: 20px; height: 20px; }
+.theme-toggle:hover {
+  color: var(--sun); border-color: var(--sun);
+  background: rgba(233, 182, 144, .08);
+}
+.theme-toggle:focus-visible { outline: 3px solid var(--wave); outline-offset: 3px; }
+/* Sonne im Dunkelmodus (Klick -> hell), Mond im Hellmodus (Klick -> dunkel) */
+.theme-toggle .icon-moon { display: none; }
+.theme-toggle .icon-sun  { display: block; }
+:root[data-theme="light"] .theme-toggle .icon-sun  { display: none; }
+:root[data-theme="light"] .theme-toggle .icon-moon { display: block; }
+
+/* Das Wordmark-Logo ist für dunklen Grund in Creme gehalten – im Hellmodus
+   färben wir es per Filter ins Marken-Petrol um, damit es lesbar bleibt. */
+.brand-logo, .footer-logo { transition: filter .35s ease; }
+:root[data-theme="light"] .brand-logo,
+:root[data-theme="light"] .footer-logo {
+  filter: brightness(0) saturate(100%) invert(14%) sepia(31%) saturate(1100%) hue-rotate(140deg) brightness(94%) contrast(96%);
+}
 
 /* ===== Visitenkarten-Layout ===== */
 .card-main { padding: 0 0 40px; }
@@ -196,7 +266,7 @@ h3 { font-size: 1.12rem; font-weight: 600; }
 .contact-item:hover {
   transform: translateY(-2px);
   border-color: rgba(233,182,144,.5);
-  background: #0e3f46;
+  background: var(--card-hover-bg);
 }
 .contact-ic {
   display: inline-flex; align-items: center; justify-content: center;
@@ -239,7 +309,7 @@ a.contact-item:nth-child(even):hover .contact-value { color: var(--wave); }
 .method:hover {
   transform: translateY(-4px);
   border-color: rgba(233,182,144,.5);
-  background: #0e3f46;
+  background: var(--card-hover-bg);
 }
 .method-ic {
   display: inline-flex; align-items: center; justify-content: center;
@@ -278,6 +348,52 @@ a.contact-item:nth-child(even):hover .contact-value { color: var(--wave); }
 .footer-legal { font-size: .86rem; color: var(--cream-dim); margin: 0 0 8px; }
 .footer-legal a { color: var(--cream-dim); text-decoration: underline; }
 .footer-fine { font-size: .76rem; color: #6e827f; max-width: 560px; margin: 0 auto; }
+
+/* ============================================================
+   Light Mode – Hintergrund mit Tiefe
+   Warmer Verlauf + dezente, fixierte Marken-Glows (Sonne/Welle),
+   damit die Karte nicht flach wirkt. Alternierende Sektion und
+   Footer werden zu sanften, leicht erhabenen Panels.
+   ============================================================ */
+:root[data-theme="light"] body {
+  background: linear-gradient(180deg, #fdfaf4 0%, #f4ecdf 100%);
+  background-attachment: fixed;
+}
+:root[data-theme="light"] body::before {
+  content: "";
+  position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(760px 520px at 12% -6%, rgba(233, 182, 144, .24), transparent 62%),
+    radial-gradient(720px 560px at 96% 3%,  rgba(142, 210, 217, .22), transparent 62%),
+    radial-gradient(820px 640px at 50% 106%, rgba(233, 182, 144, .12), transparent 60%);
+}
+
+/* Hero-Glow auf hellem Grund deutlich sichtbarer */
+:root[data-theme="light"] .hero-glow {
+  background:
+    radial-gradient(closest-side, rgba(233, 182, 144, .36), transparent 70%) 30% 12% / 62% 62% no-repeat,
+    radial-gradient(closest-side, rgba(142, 210, 217, .28), transparent 70%) 76% 70% / 54% 54% no-repeat;
+}
+
+/* Alternierende Sektion: helles, leicht erhabenes Glas-Panel */
+:root[data-theme="light"] .section-alt {
+  background: linear-gradient(180deg, rgba(255, 255, 255, .70), rgba(255, 255, 255, .42));
+  border-top: 1px solid rgba(255, 255, 255, .65);
+  border-bottom: 1px solid rgba(229, 220, 203, .55);
+}
+:root[data-theme="light"] .section-glow.sun  { background: radial-gradient(closest-side, rgba(233, 182, 144, .22), transparent 70%); }
+:root[data-theme="light"] .section-glow.wave { background: radial-gradient(closest-side, rgba(142, 210, 217, .20), transparent 70%); }
+
+/* Karten & Felder etwas anheben, damit sie sich vom Verlauf abheben */
+:root[data-theme="light"] .contact-item,
+:root[data-theme="light"] .method {
+  box-shadow: 0 12px 30px -22px rgba(18, 51, 56, .40);
+}
+
+/* Footer als sanftes Panel statt harter Fläche */
+:root[data-theme="light"] .site-footer {
+  background: linear-gradient(180deg, rgba(255, 255, 255, .55), rgba(244, 236, 223, .80));
+}
 
 /* ===== Responsive ===== */
 @media (max-width: 720px) {
