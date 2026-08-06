@@ -21,6 +21,7 @@ const VCARD = [
   "ORG:Shine On You – proWIN Beratung",
   "TITLE:Unabhängige proWIN-Vertriebsberaterin",
   "TEL;TYPE=CELL,VOICE:+4915510279357",
+  "TEL;TYPE=HOME,VOICE:+4988617138897",
   "EMAIL;TYPE=INTERNET,PREF:prowin.ela@web.de",
   "URL:https://shineonyou.de",
   "NOTE:Natürlich sauber. Natürlich du. – proWIN Beratung in Peiting & Umgebung.",
