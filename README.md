@@ -9,15 +9,15 @@ Reines HTML, CSS und JavaScript – kein Build-Schritt, keine externen Aufrufe
 
 - **Kontaktdaten** auf einen Blick: Name, Mobil, Festnetz, E-Mail,
   WhatsApp-Kanal, Website und Region.
-- **Ein-Klick ins Telefonbuch** über drei Wege:
-  - **iOS / iPhone** – die vCard öffnet sich als Kontaktkarte zum Sichern.
-  - **Android** – die vCard wird geladen und in die Kontakte importiert.
-  - **vCard (.vcf)** – universelle Kontaktdatei, funktioniert auch am
-    PC, Mac und in Outlook.
+- **Ein-Klick ins Telefonbuch** über einen einzigen Button: die vCard ist auf
+  allen Systemen dieselbe Datei. Nur der letzte Schritt heißt woanders anders –
+  iPhone „Neuen Kontakt sichern", Android „Kontakte importieren", PC/Mac
+  Doppelklick auf die `.vcf`. `js/card.js` blendet dazu den Hinweis zum
+  erkannten Gerät ein.
 
 Alle Buttons verlinken direkt auf `manuela-zimmert.vcf`, damit die Seite auch
 ohne JavaScript vollständig funktioniert. Das Skript `js/card.js` verbessert
-lediglich die Nutzung (Plattform-Erkennung, sauberer Blob-Download).
+lediglich die Nutzung (Plattform-Hinweis, sauberer Blob-Download).
 
 Die Seite ist bewusst **nicht für Suchmaschinen gelistet** (`noindex` +
 `robots.txt`), da Besucher sie über einen aufgedruckten QR-Code aufrufen.
@@ -53,11 +53,13 @@ python3 -m http.server 8000
 
 ## Kontaktdaten anpassen
 
-Die Daten stehen an drei Stellen und müssen bei Änderungen synchron bleiben:
+Die Kontaktdaten stehen an zwei Stellen und müssen bei Änderungen synchron
+bleiben:
 
-1. `manuela-zimmert.vcf` – die herunterladbare vCard.
-2. `js/card.js` – die Konstante `VCARD` (Quelle für den Blob-Download).
-3. `index.html` – die sichtbaren Kontaktzeilen und die strukturierten Daten.
+1. `manuela-zimmert.vcf` – die einzige Quelle für die vCard. `js/card.js` lädt
+   diese Datei und reicht sie als Download weiter, pflegt den Inhalt also
+   **nicht** zusätzlich im Skript.
+2. `index.html` – die sichtbaren Kontaktzeilen und die strukturierten Daten.
 
 ---
 

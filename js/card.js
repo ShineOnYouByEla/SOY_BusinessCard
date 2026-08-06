@@ -11,24 +11,10 @@
 const yearEl = document.getElementById("year");
 if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-/* ===== vCard als Quelle (identisch zur Datei manuela-zimmert.vcf) ===== */
-const VCARD = [
-  "BEGIN:VCARD",
-  "VERSION:3.0",
-  "N:Zimmert;Manuela;;;",
-  "FN:Manuela Zimmert",
-  "NICKNAME:Ela",
-  "ORG:Shine On You – proWIN Beratung",
-  "TITLE:Unabhängige proWIN-Vertriebsberaterin",
-  "TEL;TYPE=CELL,VOICE:+4915510279357",
-  "TEL;TYPE=HOME,VOICE:+4988617138897",
-  "EMAIL;TYPE=INTERNET,PREF:prowin.ela@web.de",
-  "URL:https://shineonyou.de",
-  "NOTE:Natürlich sauber. Natürlich du. – proWIN Beratung in Peiting & Umgebung.",
-  "END:VCARD",
-  "",
-].join("\r\n");
-
+/* ===== vCard =====
+   Einzige Quelle der Wahrheit ist die Datei manuela-zimmert.vcf.
+   Der Inhalt wird nicht mehr zusätzlich hier gepflegt – sonst laufen
+   Datei und Skript auseinander (iOS bekam die Datei, Android den Blob). */
 const VCARD_FILE = "manuela-zimmert.vcf";
 
 /* Plattform-Erkennung (nur für kleine UX-Verbesserungen, nicht sicherheitsrelevant) */
@@ -42,11 +28,14 @@ const isAndroid = /Android/.test(ua);
    - iOS ignoriert das download-Attribut und öffnet die Datei inline
      (genau das wollen wir: die Kontakt-Vorschau erscheint). Standardverhalten
      des Links reicht hier völlig aus.
-   - Auf Android/Desktop erzeugen wir einen Blob, damit der Dateiname stimmt
-     und der Download unabhängig vom Server-MIME-Type funktioniert.
+   - Auf Android/Desktop laden wir die Datei und reichen sie als Blob weiter,
+     damit der Dateiname stimmt und der Download unabhängig vom
+     Server-MIME-Type funktioniert.
 */
-function downloadVCard() {
-  const blob = new Blob([VCARD], { type: "text/vcard;charset=utf-8" });
+async function downloadVCard() {
+  const res = await fetch(VCARD_FILE, { cache: "no-cache" });
+  if (!res.ok) throw new Error("vCard nicht erreichbar (" + res.status + ")");
+  const blob = new Blob([await res.text()], { type: "text/vcard;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
@@ -58,13 +47,16 @@ function downloadVCard() {
 }
 
 /* Alle Links, die auf die vCard zeigen, verbessern */
-document.querySelectorAll('a[href$="' + VCARD_FILE + '"], a[href$=".vcf"]').forEach((a) => {
+document.querySelectorAll('a[href$=".vcf"]').forEach((a) => {
   a.addEventListener("click", (e) => {
     // iOS: Standard-Navigation zur .vcf-Datei beibehalten (öffnet Kontaktkarte)
     if (isIOS) return;
     // Sonst: sauberen Blob-Download auslösen
     e.preventDefault();
-    downloadVCard();
+    downloadVCard().catch(() => {
+      // z. B. offline oder lokal per file:// geöffnet -> normaler Link-Download
+      window.location.href = a.getAttribute("href");
+    });
   });
 });
 
@@ -103,7 +95,7 @@ document.querySelectorAll('a[href$="' + VCARD_FILE + '"], a[href$=".vcf"]').forE
 (function initReveal() {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   if (!("IntersectionObserver" in window)) return;
-  const targets = document.querySelectorAll(".contact-list li, .method, #speichern .section-sub");
+  const targets = document.querySelectorAll(".contact-list li, .save-box, #speichern .section-sub");
   if (!targets.length) return;
 
   const io = new IntersectionObserver((entries) => {
@@ -123,17 +115,15 @@ document.querySelectorAll('a[href$="' + VCARD_FILE + '"], a[href$=".vcf"]').forE
   });
 })();
 
-/* ===== Passende Plattform-Karte hervorheben & nach vorne holen ===== */
-(function highlightPlatform() {
-  const cards = document.querySelector(".method-cards");
-  if (!cards) return;
-  const list = Array.from(cards.children);
-  let match = null;
-  if (isIOS) match = list.find((c) => /iPhone|iOS/i.test(c.textContent));
-  else if (isAndroid) match = list.find((c) => /Android/i.test(c.textContent));
-  if (match) {
-    match.style.borderColor = "rgba(233,182,144,.6)";
-    match.style.background = "var(--card-hover-bg)";
-    cards.insertBefore(match, cards.firstChild);
-  }
+/* ===== Nur den Hinweis zum erkannten Gerät zeigen =====
+   Der Speichern-Weg ist auf allen Geräten derselbe – lediglich der letzte
+   Schritt heißt woanders anders. Ohne JavaScript bleiben alle Hinweise
+   sichtbar, das ist ebenfalls verständlich. */
+(function applyPlatformHint() {
+  const hints = document.querySelectorAll(".save-hints [data-platform]");
+  if (!hints.length) return;
+  const current = isIOS ? "ios" : isAndroid ? "android" : "desktop";
+  hints.forEach((li) => {
+    li.hidden = li.dataset.platform !== current;
+  });
 })();
