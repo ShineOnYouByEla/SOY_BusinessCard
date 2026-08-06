@@ -7,8 +7,8 @@ Reines HTML, CSS und JavaScript – kein Build-Schritt, keine externen Aufrufe
 
 ## Funktionen
 
-- **Kontaktdaten** auf einen Blick: Name, Telefon, E-Mail, WhatsApp-Kanal,
-  Website und Region.
+- **Kontaktdaten** auf einen Blick: Name, Mobil, Festnetz, E-Mail,
+  WhatsApp-Kanal, Website und Region.
 - **Ein-Klick ins Telefonbuch** über drei Wege:
   - **iOS / iPhone** – die vCard öffnet sich als Kontaktkarte zum Sichern.
   - **Android** – die vCard wird geladen und in die Kontakte importiert.
