@@ -1,0 +1,51 @@
+# Deploy der statischen Visitenkarte zu GitHub Pages.
+#
+# Notwendig, seit unter Settings -> Pages als Source "GitHub Actions"
+# eingestellt ist: der frueher automatische Branch-Deploy laeuft dann
+# nicht mehr, es muss ein eigener Workflow deployen.
+#
+# Es gibt keinen Build-Schritt - das Repo wird so ausgeliefert, wie es ist.
+name: Deploy zu GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # Erlaubt einen manuellen Deploy ueber Actions -> Run workflow,
+  # ohne dafuer einen Commit erzeugen zu muessen.
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Laufende Deploys nicht abbrechen, damit ein angefangener Rollout
+# sauber zu Ende geht.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: Pages konfigurieren
+        uses: actions/configure-pages@v5
+
+      # Laedt das Repo-Wurzelverzeichnis hoch. .git und .github werden
+      # von der Action selbst ausgeschlossen; CNAME bleibt erhalten und
+      # haelt damit die Custom Domain qr.shineonyou.de.
+      - name: Seite als Artefakt hochladen
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Zu GitHub Pages deployen
+        id: deployment
+        uses: actions/deploy-pages@v4
