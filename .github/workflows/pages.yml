@@ -33,19 +33,23 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Repository auschecken
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Pages konfigurieren
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       # Laedt das Repo-Wurzelverzeichnis hoch. .git und .github werden
       # von der Action selbst ausgeschlossen; CNAME bleibt erhalten und
       # haelt damit die Custom Domain qr.shineonyou.de.
+      # include-hidden-files: seit v4 werden Dotfiles standardmaessig
+      # NICHT mehr mit hochgeladen - ohne dieses Flag wuerde .nojekyll
+      # fehlen und GitHub Pages wieder Jekyll auf die Seite loslassen.
       - name: Seite als Artefakt hochladen
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: .
+          include-hidden-files: true
 
       - name: Zu GitHub Pages deployen
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
