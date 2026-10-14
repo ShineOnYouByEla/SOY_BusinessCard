@@ -170,6 +170,24 @@ h3 { font-size: 1.12rem; font-weight: 600; }
 /* Fallback, falls (noch) kein Modus gesetzt ist: Mond zeigen */
 :root:not([data-theme-mode]) .theme-toggle .icon-moon { display: block; }
 
+/* ===== Sprachumschalter (DE/EN) =====
+   Gegenstueck zum Theme-Umschalter: gleiche Form, links statt rechts,
+   damit das Logo mittig bleibt. Zeigt das Kuerzel der anderen Sprache. */
+.lang-switch {
+  position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px; border-radius: 50%;
+  color: var(--cream); border: 1px solid var(--petrol-line);
+  font-family: var(--font-head); font-weight: 600; font-size: .8rem;
+  letter-spacing: .04em; line-height: 1; text-decoration: none;
+  transition: color .2s ease, border-color .2s ease, background .2s ease;
+}
+.lang-switch:hover {
+  color: var(--sun); border-color: var(--sun);
+  background: rgba(233, 182, 144, .08);
+}
+.lang-switch:focus-visible { outline: 3px solid var(--wave); outline-offset: 3px; }
+
 /* Das Wordmark-Logo ist für dunklen Grund in Creme gehalten – im Hellmodus
    färben wir es per Filter ins Marken-Petrol um, damit es lesbar bleibt. */
 .brand-logo, .footer-logo { transition: filter .35s ease; }

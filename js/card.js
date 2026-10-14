@@ -14,8 +14,9 @@ if (yearEl) yearEl.textContent = new Date().getFullYear();
 /* ===== vCard =====
    Einzige Quelle der Wahrheit ist die Datei manuela-zimmert.vcf.
    Der Inhalt wird nicht mehr zusätzlich hier gepflegt – sonst laufen
-   Datei und Skript auseinander (iOS bekam die Datei, Android den Blob). */
-const VCARD_FILE = "manuela-zimmert.vcf";
+   Datei und Skript auseinander (iOS bekam die Datei, Android den Blob).
+   Der Pfad kommt aus dem Link selbst: die englische Fassung unter en/
+   verweist mit ../ auf dieselbe Datei. */
 
 /* Plattform-Erkennung (nur für kleine UX-Verbesserungen, nicht sicherheitsrelevant) */
 const ua = navigator.userAgent || "";
@@ -32,8 +33,8 @@ const isAndroid = /Android/.test(ua);
      damit der Dateiname stimmt und der Download unabhängig vom
      Server-MIME-Type funktioniert.
 */
-async function downloadVCard() {
-  const res = await fetch(VCARD_FILE, { cache: "no-cache" });
+async function downloadVCard(file) {
+  const res = await fetch(file, { cache: "no-cache" });
   if (!res.ok) throw new Error("vCard nicht erreichbar (" + res.status + ")");
   const blob = new Blob([await res.text()], { type: "text/vcard;charset=utf-8" });
   const url = URL.createObjectURL(blob);
@@ -53,7 +54,7 @@ document.querySelectorAll('a[href$=".vcf"]').forEach((a) => {
     if (isIOS) return;
     // Sonst: sauberen Blob-Download auslösen
     e.preventDefault();
-    downloadVCard().catch(() => {
+    downloadVCard(a.getAttribute("href")).catch(() => {
       // z. B. offline oder lokal per file:// geöffnet -> normaler Link-Download
       window.location.href = a.getAttribute("href");
     });
