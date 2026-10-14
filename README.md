@@ -15,6 +15,12 @@ Reines HTML, CSS und JavaScript – kein Build-Schritt, keine externen Aufrufe
   Doppelklick auf die `.vcf`. `js/card.js` blendet dazu den Hinweis zum
   erkannten Gerät ein.
 
+- **Deutsch und Englisch**: `en/index.html` ist die englische Fassung. Beim
+  Aufruf leitet ein kleines Inline-Skript auf die Sprache des Systems um
+  (Deutsch bleibt Deutsch, alles andere landet auf Englisch). Der Knopf
+  **EN/DE** links oben schaltet um; die Wahl merkt sich der Browser
+  (`localStorage`, Schlüssel `soy-lang`).
+
 Alle Buttons verlinken direkt auf `manuela-zimmert.vcf`, damit die Seite auch
 ohne JavaScript vollständig funktioniert. Das Skript `js/card.js` verbessert
 lediglich die Nutzung (Plattform-Hinweis, sauberer Blob-Download).
@@ -40,7 +46,8 @@ python3 -m http.server 8000
 
 ```
 .
-├── index.html            # Visitenkarte
+├── index.html            # Visitenkarte (Deutsch)
+├── en/index.html         # Visitenkarte (Englisch)
 ├── manuela-zimmert.vcf   # vCard (Kontaktdatei)
 ├── css/
 │   ├── fonts.css         # lokale Schriften (Inter, Montserrat)
@@ -59,7 +66,11 @@ bleiben:
 1. `manuela-zimmert.vcf` – die einzige Quelle für die vCard. `js/card.js` lädt
    diese Datei und reicht sie als Download weiter, pflegt den Inhalt also
    **nicht** zusätzlich im Skript.
-2. `index.html` – die sichtbaren Kontaktzeilen und die strukturierten Daten.
+2. `index.html` und `en/index.html` – die sichtbaren Kontaktzeilen und die
+   strukturierten Daten.
+
+Die vCard selbst gibt es nur einmal (deutsch); beide Sprachfassungen laden
+dieselbe Datei.
 
 ---
 
