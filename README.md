@@ -1,6 +1,6 @@
 # Shine On You – Digitale Visitenkarte
 
-Digitale Visitenkarte von **Manuela Zimmert** (proWIN-Beratung, Peiting) im
+Digitale Visitenkarte von **Manuela Zimmert** (Beratung, Peiting) im
 Design der Hauptseite [shineonyou.de](https://shineonyou.de).
 Reines HTML, CSS und JavaScript – kein Build-Schritt, keine externen Aufrufe
 (DSGVO-freundlich).
@@ -71,8 +71,3 @@ bleiben:
 
 Die vCard selbst gibt es nur einmal (deutsch); beide Sprachfassungen laden
 dieselbe Datei.
-
----
-
-„proWIN" ist eine Marke der proWIN International. Diese Seite ist ein
-unabhängiges Angebot einer selbstständigen Vertriebspartnerin.
